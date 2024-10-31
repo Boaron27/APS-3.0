@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="pt-BR" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Chamados</title>
+        <link rel="stylesheet" type="text/css" href="editor.css" />
+
+
+    </h:head>
+    <h:body>
+
+
+        <h:form prependId="false">
+
+
+            <p:confirmDialog id="dlgExcluir" global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton id="não" value="Não" type="button" styleClass="rounded-button ui-confirmdialog-no ui-button-flat"/>
+                <p:commandButton id="sim" value="Sim" ajax="true" type="button" styleClass="rounded-button ui-button-danger ui-confirmdialog-yes" >
+                </p:commandButton>    
+            </p:confirmDialog>
+
+
+            <h:panelGroup rendered="#{cadastroBean.visivel ne 'lista'}">
+                <p:panel style="width: 400px; margin: auto;display:flex; justify-content: center;">
+                    <h1 style="text-align: center;">Enviar chamado!</h1>
+                    <br></br>               
+                    <h:panelGrid columns="3" cellpadding="7" styleClass="mb-3" style="display:flex; justify-content: center" >
+                        <p:outputLabel for="patrimonio" value="Patrimonio"/>
+                        <p:inputText id="patrimonio" value="#{cadastroBean.cadastro.patrimonio}"  label="Patrimonio" style="width: 213px; height: 30px;"/>
+                        <p:message for="patrimonio" />
+
+                        <p:outputLabel for="requisitor" value="Requisitor"/>
+                        <p:inputText id="requisitor" value="#{cadastroBean.cadastro.requisitor}" label="Requisitor"  style="width: 213px; height: 30px;"/>
+                        <p:message for="requisitor"/>
+
+                        <p:outputLabel for="status" value="Status"/>
+                        <p:inputText id="status" value="#{cadastroBean.cadastro.status}" placeholder="Aberto ou fechado" label="Status do produto" style="width: 213px; height: 30px;">
+                        </p:inputText>
+                        <p:message for="status"/>
+
+                        <p:outputLabel for="ajuda" value="Ajuda"/>
+                        <p:inputTextarea rows="1" cols="33" id="ajuda" value="#{cadastroBean.cadastro.ajuda}" label="Ajuda" style="width: 213px; height: 30px;"   />
+                        <p:message for="ajuda"/>
+
+                        <p:outputLabel for="dataini" value="Data"/>
+                        <p:inputText  id="dataini" value="#{cadastroBean.cadastro.dataIni}" label="Data" style="width: 213px; height: 30px; overflow-y: scroll;"  />
+                        <p:message for="dataini"/>
+
+                        <p:outputLabel rendered="#{cadastroBean.visivel eq 'atualizar'}" for="fechamento" value="Data de fechamento"/>
+                        <p:inputText  rendered="#{cadastroBean.visivel eq 'atualizar'}" id="fechamento" value="#{cadastroBean.cadastro.dataFec}" placeholder="xx/xx/xxxx" label="Data de fechamento" style="width: 213px; height: 30px; overflow-y: scroll;"  />
+                        <p:message for="fechamento"/>
+                     
+                        <br></br>
+                        
+                        
+
+                        <p:commandButton id="atualiza" action="#{cadastroBean.atualiza()}" process="@form" update="@form" value="Atualizar" rendered="#{cadastroBean.visivel eq 'atualizar'}"/>
+
+                    </h:panelGrid>
+                   
+                        <p:commandButton id="addCadastro" value="Adicionar chamado" actionListener="#{cadastroBean.adicionarCadastro()}"  
+                                         style="display: flex; justify-content: center; align-items: center;padding: 5px 10px; border-radius: 3px; margin: 5px;"
+                                         styleClass="rounded-button ui-button-success" update="@form" process="@form"  rendered="#{cadastroBean.visivel eq 'cadastrar'}"/>
+                        <p:commandButton value="Cancelar envio" actionListener="#{cadastroBean.voltarLista()}" 
+                                         style="display: flex; justify-content: center; align-items: center;padding: 5px 10px; border-radius: 3px; margin: 5px;"
+                                         styleClass="rounded-button ui-button-warning"  process="@this" update="@form" rendered="#{cadastroBean.visivel eq 'cadastrar'}"/>
+                </p:panel>
+            </h:panelGroup>
+
+
+            <h:panelGroup rendered="#{cadastroBean.visivel eq 'lista'}">
+                <h1 style=" text-align: center;"> Tabela de chamados</h1>
+                <br></br>
+                <p:inputText id="searchInput" value="#{cadastroBean.termoPesquisa}" placeholder="Pesquisar..." />
+                <p:commandButton icon="pi pi-search" styleClass="rounded-button ui-button-info" actionListener="#{cadastroBean.pesquisar}" update="Table" />
+                <p:dataTable id="Table" var="item" value="#{cadastroBean.listaCadastro}"
+                             style="margin-bottom:20px" scrollable="true" scrollHeight="400">
+
+                    <p:column headerText="Patrimonio">
+                        <h:outputText value="PAT-#{item.patrimonio}"/>
+                    </p:column>
+
+                    <p:column headerText="Requisitor">
+                        <h:outputText value="#{item.requisitor}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Status">
+                        <h:outputText value="#{item.status}"/>
+                    </p:column>
+                    <p:column headerText="Data de abertura">
+                        <h:outputText value="#{item.dataIni}"/>
+                    </p:column>
+
+                    <p:column headerText="OS:">
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    
+
+
+
+                    <p:column style="width:1rem">
+                        <p:commandLink oncomplete="PF('dlg').show()" action="#{cadastroBean.preparaDialog(item)}"
+                                       update="dlgAjuda" process="@this">
+                            <i class="pi pi-question"/>
+                        </p:commandLink>
+
+                    </p:column>
+                    
+                    <p:column style="width:1rem">
+                        <p:commandLink id="enviar" action="#{cadastroBean.enviarCadastro(item)}"  process="@form" update="@form">
+                            <i class="pi pi-send"/>
+                        </p:commandLink>
+                    </p:column>
+
+                    <p:column style="width:1rem">
+                        <p:commandLink id="editar" action="#{cadastroBean.preparaEdicao(item)}"  process="@form" update="@form">
+                            <i class="pi pi-pencil"/>
+                        </p:commandLink>
+                    </p:column>
+                    <p:column style="width:2rem">SS
+                        <p:commandButton id="excluir" action="#{cadastroBean.excluirCadastro(item)}" icon="pi pi-trash" 
+                                         ajax="true" update="Table"
+                                         process="@this" styleClass="rounded-button ui-button-danger ui-button-flat">
+                            <p:confirm header="Deletar Chamado" message="Tem certeza que deseja deletar esse Chamado?" icon="pi pi-info-circle"/>
+                        </p:commandButton>
+                    </p:column>
+
+
+
+                </p:dataTable>
+                <p:commandButton id='novoCadastro' value="Novo Cadastro" action="#{cadastroBean.preparaCadastro()}"  process="@form" update="@form"/>
+                <p:dialog id="confirdlg" header="Ajuda informada" widgetVar="dlg" resizable="false" modal="true">
+                    <h:panelGroup id="dlgAjuda">
+                        <p:panel>
+                            <h:panelGrid>
+                                <p:column headerText="Ajuda">
+                                    <h:inputTextarea readonly="true"  rows="10" cols="33" value="#{cadastroBean.cadastro.ajuda}" />
+                                </p:column>
+                                <p:column headerText="Data de fechamento">
+                                    <h:outputText value=" Data de fechamento: #{cadastroBean.cadastro.dataFec}"/>
+                                </p:column>
+                            </h:panelGrid>
+                        </p:panel>
+                    </h:panelGroup>
+                </p:dialog>
+            </h:panelGroup>
+
+
+        </h:form>
+    </h:body>
+</html>

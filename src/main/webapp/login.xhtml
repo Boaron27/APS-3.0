@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="pt-BR" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Login</title>
+        <link rel="stylesheet" type="text/css" href="editor.css" />
+    </h:head>
+    <h:body>
+        <h:form prependId="false">
+            <p:panel style="width: 400px; margin: auto;display:flex; justify-content: center;">
+                <h1 style="text-align: center;">Login</h1>
+                <br></br>               
+                <h:panelGrid columns="3" cellpadding="7" styleClass="mb-3" style="display:flex; justify-content: center" >
+                    <p:outputLabel for="email" value="Email"/>
+                    <p:inputText id="email" value="#{contaBean.conta.email}" label="Email"  style="width: 213px; height: 30px;"/>
+                    <p:message id="email-msg" for="email"/>
+
+                    <p:outputLabel for="senha" value="Senha"/>
+                    <p:inputText id="senha" value="#{contaBean.conta.senha}" label="Departamento" style="width: 213px; height: 30px;" />
+                    <p:message id="senha-msg" for="senha" />
+
+
+
+
+                    <br></br>
+                    <p:commandButton id="entrar" value="Entrar" actionListener="#{contaBean.adicionarConta()}" action='tabela'
+                                     process="@form" update="@form"
+                                     style="display: flex; justify-content: center; align-items: center;padding: 10px 20px; border-radius: 5px; margin: 10px;"
+                                     styleClass="rounded-button ui-button-success"  icon="pi pi-check" iconPos="right">
+                        
+
+
+                    </p:commandButton>
+                    
+                    <br></br>
+                    <h:outputLabel for="novo" value="Ainda não possui uma conta?">
+                        <br></br>
+                        <p:commandLink id="novo"  class="mr-4"
+                                       value="Criar conta" onclick="irParaOutraPagina()"/>
+                        <script>
+                            function irParaOutraPagina() {
+                                window.location.href = "cadastro.xhtml";
+                            }
+                        </script>
+
+
+                    </h:outputLabel>
+
+
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+
+    </h:body>
+</html>

@@ -1,0 +1,62 @@
+<html lang="pt-BR" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Cadastro de conta</title>
+        <link rel="stylesheet" type="text/css" href="editor.css" />
+        
+
+    </h:head>
+    <h:body>
+
+
+        <h:form id="formRegistro" >
+            <h:panelGroup >
+                <p:panel style="width: 400px; margin: auto;display:flex; justify-content: center;">
+                    <h1 style="text-align: center;">Cadastre sua conta!</h1>
+                    <br></br>               
+                    <h:panelGrid columns="3" cellpadding="7" styleClass="mb-3" style="display:flex; justify-content: center" >
+                        <p:outputLabel for="nome" value="Nome:"/>
+                        <p:inputText id="nome" value="#{novoLoginBean.novoLogin.nome}"  label="Nome" style="width: 213px; height: 30px;"/>
+                        <p:message for="nome" />
+
+                        <p:outputLabel for="newemail" value="Email"/>
+                        <p:inputText id="newemail" value="#{novoLoginBean.novoLogin.email}" label="Email"  style="width: 213px; height: 30px;"/>
+                        <p:message for="newemail"/>
+                        
+                        <p:outputLabel for="senha" value="Senha"/>
+                        <p:inputText id="senha" value="#{novoLoginBean.novoLogin.senha}" label="Senha"  style="width: 213px; height: 30px;"/>
+                        <p:message for="senha" id="senha-msg"/>
+                        
+                        
+
+                        <p:outputLabel for="departamento" value="Departamento"/>
+                        <p:inputText id="departamento" value="#{novoLoginBean.novoLogin.departamento}" label="Departamento" style="width: 213px; height: 30px;">
+                        </p:inputText>
+                        <br></br>
+
+
+                        <p:outputLabel for="cargo" value="Cargo"/>
+                        <p:inputText  id="cargo" value="#{novoLoginBean.novoLogin.cargo}" label="Cargo" style="width: 213px; height: 30px;"   />
+                        <p:message for="cargo"/>
+
+                        <br></br>
+                        <p:commandButton id="confirmar" value="Confirmar" actionListener="#{novoLoginBean.adicionarNovoLogin()}" action='tabela'
+                                         style="display: flex; justify-content: center; align-items: center;padding: 10px 20px; border-radius: 5px; margin: 10px;"
+                                         styleClass="rounded-button ui-button-success" update="@form" process="@form" icon="pi pi-check" iconPos="right" 
+                                         onclick="irTabela()">
+                            
+                        </p:commandButton>
+                       
+
+                    </h:panelGrid>
+                </p:panel>
+            </h:panelGroup>
+        </h:form>
+    
+    </h:body>
+
+</html>
+
+
